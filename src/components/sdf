@@ -1,0 +1,73 @@
+import React, {Component, useState} from 'react'
+import MeteoComponents from "./MeteoComponents.jsx"
+import axios from "axios";
+import SuggestionComponents from "./SuggestionComponents";
+
+
+function SearchbarComponents() {
+  const [inputs, setInputs] = useState({});
+  const [city, setCity] = useState();
+  const [suggestion, setSuggestion] = useState([]);
+
+  const handleSigninSubmit = (event) => {
+    event.preventDefault();
+    setCity(inputs['city']);
+  };
+
+  const handleChange = (event) => {
+    console.log(event)
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs(values => ({...values, [name]: value}))
+  }
+
+  const handleInputChange = (event) => {
+
+    const cityArray = [];
+    const url = "https://geocoding-api.open-meteo.com/v1/search?name=";
+    axios.get(url+event.target.value).then(r => {
+      for (const city of r.data.results) {
+        cityArray.push(city);
+      }
+      setSuggestion(cityArray);
+    })
+  }
+
+  const handleSuggestionSelect = (event) => {
+    console.log(event.target.innerHTML);
+    //document.getElementById('citySearchBar').value = event.target.innerHTML;
+  }
+
+  return (
+      <div>SearchbarComponents
+        <form onSubmit={handleSigninSubmit}>
+          <input type="text" name="city" id="citySearchBar" onInput={handleInputChange} onChange={handleChange} placeholder="Rechercher votre ville..." />
+          {suggestion.length !== 0 &&(
+              <SuggestionComponents suggestion = {suggestion}/>
+          )}
+
+          {suggestion.length !== 0 &&(
+
+              <ul id="suggestionsUl" >
+                { suggestion.map(value => (
+                    <li key={value.name} value={value.name} onClick={handleSuggestionSelect}>
+                      {value.name}
+                    </li>
+                ))}
+              </ul>)
+          }
+          <button type="button"><img src="../img/localisation_icon.png"></img></button>
+          <button type="Submit">Valider</button>
+        </form>
+
+        <p>{city}</p>
+        {city != null && (
+            <MeteoComponents city={city} />
+        )}
+
+      </div>
+  )
+
+}
+
+export default SearchbarComponents
