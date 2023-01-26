@@ -24,16 +24,7 @@ function MeteoComponents(props) {
     });
   }, []);
 
-  const test = () => {
-    return meteo && <div>{meteo}</div>;
-  };
-
-  return (
-    <>
-      {test()}
-      MeteoComponents
-    </>
-  );
+  return <></>;
 }
 
 export default MeteoComponents;

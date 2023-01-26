@@ -1,10 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function GeoLocalisationComponents(props) {
-  const { location, setLocation, setSearchTerm, setChoosenCityCoordinates } =
-    props;
-
+  const { setLocation } = props;
   useEffect(() => {
     if (!navigator.geolocation) {
       alert(
@@ -15,8 +13,8 @@ function GeoLocalisationComponents(props) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setLocation({
-          latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
         });
       },
       (error) => {
@@ -24,27 +22,6 @@ function GeoLocalisationComponents(props) {
       }
     );
   }, []);
-
-  useEffect(() => {
-    if (location) {
-      const url =
-        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
-        location.latitude +
-        "&lon=" +
-        location.longitude;
-      axios(url).then((res) => {
-        if (res.data.address.city) {
-          setSearchTerm(res.data.address.city);
-          setChoosenCityCoordinates({
-            latitude: location.latitude,
-            longitude: location.longitude,
-          });
-        } else {
-          console.log("city not found");
-        }
-      });
-    }
-  }, [location]);
 
   return <></>;
 }

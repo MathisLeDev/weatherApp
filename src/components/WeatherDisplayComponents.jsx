@@ -1,54 +1,65 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function WeatherDisplayComponents(props) {
-  const { weather } = props;
-  const [weatherPerDay, setweatherPerDay] = useState([]);
-  const [isReady, setIsReady] = useState(false);
-  const [selectedDay, setSelectedDay] = useState("");
+  const { choosenCity } = props;
+  let weeklyWeather = [];
+
   useEffect(() => {
-    for (let i = 0; i < weather.daily.time.length; i++) {
-      weatherPerDay.push({
-        day: weather.daily.time[i],
-        tempMin: weather.daily.temperature_2m_min[i],
-        tempMax: weather.daily.temperature_2m_max[i],
+    if (choosenCity) {
+      console.log("get weather data");
+      console.log(choosenCity);
+      const latitude = choosenCity.latitude;
+      const longitude = choosenCity.longitude;
+      const timezone = choosenCity.timezone;
+      const url =
+        "https://api.open-meteo.com/v1/forecast?latitude=" +
+        latitude +
+        "&longitude=" +
+        longitude +
+        "&daily=temperature_2m_max" +
+        "&daily=temperature_2m_min" +
+        "&current_weather=true" +
+        "&timezone=" +
+        timezone;
+      axios(url).then((response) => {
+        //weeklyWeather.push(response.data.daily);
+        for (let i = 0; i < response.data.daily.time.length; i++) {
+          weeklyWeather.push({
+            time: response.data.daily.time[i],
+            tempMin: response.data.daily.temperature_2m_min[i],
+            tempMax: response.data.daily.temperature_2m_max[i],
+          });
+        }
+        console.log(weeklyWeather);
       });
     }
-    setIsReady(true);
-    console.log(weatherPerDay);
-  }, [weather]);
+  });
 
-  const getActualDayWeather = () => {
-    return <>selectedDay: {selectedDay}</>;
-  };
+  useEffect(() => {
+    console.log(weeklyWeather);
+    displayWeeklyWeather();
+  }, [weeklyWeather]);
 
-  const handleDayClicked = (event) => {
-    console.log(event.target.id);
-    setSelectedDay(event.target.id);
-  };
-
-  const getWeatherOfTheWeek = () => {
-    if (isReady) {
-      console.log(weatherPerDay);
+  const displayWeeklyWeather = () => {
+    if (weeklyWeather.length > 0) {
+      console.log("display weekly weather");
       return (
         <ul>
-          {weatherPerDay.map((day) => (
-            <li id={day.day} key={day.day} onClick={handleDayClicked}>
-              {day.day}, {day.tempMin}/{day.tempMax}
-            </li>
+          {weeklyWeather.map((weather) => (
+            <li key={weather.time}>{weather.tempMin}</li>
           ))}
         </ul>
       );
     } else {
-      return <span>vide</span>;
+      console.log(weeklyWeather.length);
     }
   };
 
   return (
     <>
-      {getActualDayWeather()}
-      {weatherPerDay !== [] && getWeatherOfTheWeek()}
-      {weatherPerDay !== [] && <p>dz</p>}
-      WeatherDisplayComponents
+      getWeatherOfTheWeek
+      {displayWeeklyWeather()}
     </>
   );
 }
