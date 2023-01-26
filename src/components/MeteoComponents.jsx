@@ -1,39 +1,39 @@
-import React, {useEffect} from 'react'
-import { useState } from 'react'
+import React, { useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-function MeteoComponents(choosenCityCoordinates) {
+function MeteoComponents(props) {
+  const { choosenCityCoordinates, setWeather } = props;
+  const [meteo, setMeteo] = useState();
 
+  useEffect(() => {
+    const latitude = choosenCityCoordinates.latitude;
+    const longitude = choosenCityCoordinates.longitude;
 
-  const [meteo,setMeteo] = useState()
-
-  useEffect(()=>{
-    const latitude = choosenCityCoordinates.choosenCityCoordinates.latitude;
-    const longitude = choosenCityCoordinates.choosenCityCoordinates.longitude;
-
-    const url = "https://api.open-meteo.com/v1/forecast?latitude="+latitude+"&longitude="+longitude+"&hourly=temperature_2m"
-    axios.get(url).then(r => {
-      console.log(r);
-      console.log(url);
+    const url =
+      "https://api.open-meteo.com/v1/forecast?latitude=" +
+      latitude +
+      "&longitude=" +
+      longitude +
+      "&daily=temperature_2m_min" +
+      "&daily=temperature_2m_max" +
+      "&timezone=GMT";
+    axios.get(url).then((r) => {
+      setWeather(r.data);
       setMeteo(r.data.latitude);
-    })
-  },[])
-
+    });
+  }, []);
 
   const test = () => {
-    return meteo && (
-        <div>{meteo}</div>
-    )
-  }
-
+    return meteo && <div>{meteo}</div>;
+  };
 
   return (
     <>
       {test()}
       MeteoComponents
     </>
-  )
-
+  );
 }
 
-export default MeteoComponents
+export default MeteoComponents;

@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import MeteoComponents from "./MeteoComponents";
 import GeoLocalisationComponents from "./GeoLocalisationComponents";
 
-function SearchbarComponents() {
+function SearchbarComponents(props) {
+  const { setWeather } = props;
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [choosenCityCoordinates, setChoosenCityCoordinates] = useState();
@@ -27,7 +28,6 @@ function SearchbarComponents() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event);
     setChoiceConfirmed(true);
   }
 
@@ -44,7 +44,6 @@ function SearchbarComponents() {
   function handleLocalisationButtonClick(event) {
     event.preventDefault();
     setGeoLocalisationComponents(true);
-    console.log("demande de localisation");
   }
 
   return (
@@ -77,7 +76,10 @@ function SearchbarComponents() {
         : ""}
 
       {choiceConfirmed !== false ? (
-        <MeteoComponents choosenCityCoordinates={choosenCityCoordinates} />
+        <MeteoComponents
+          choosenCityCoordinates={choosenCityCoordinates}
+          setWeather={setWeather}
+        />
       ) : (
         ""
       )}
@@ -95,4 +97,4 @@ function SearchbarComponents() {
   );
 }
 
-export default SearchbarComponents
+export default SearchbarComponents;

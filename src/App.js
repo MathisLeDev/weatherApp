@@ -4,11 +4,11 @@ import WeatherDisplayComponents from "./components/WeatherDisplayComponents";
 import { useState } from "react";
 
 function App() {
-  const [weather, setWeather] = useState();
+  const [weather, setWeather] = useState(null);
   return (
     <>
-      <SearchbarComponents />
-      {weather !== null && <WeatherDisplayComponents />}
+      <SearchbarComponents setWeather={setWeather} />
+      {weather !== null && <WeatherDisplayComponents weather={weather} />}
     </>
   );
 }

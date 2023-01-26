@@ -34,7 +34,6 @@ function GeoLocalisationComponents(props) {
         location.longitude;
       axios(url).then((res) => {
         if (res.data.address.city) {
-          console.log(res.data.address.city);
           setSearchTerm(res.data.address.city);
           setChoosenCityCoordinates({
             latitude: location.latitude,
@@ -50,4 +49,4 @@ function GeoLocalisationComponents(props) {
   return <></>;
 }
 
-export default GeoLocalisationComponents
+export default GeoLocalisationComponents;
