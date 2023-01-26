@@ -1,11 +1,14 @@
-import './App.css';
-import SearchbarComponents from "./components/SearchbarComponents.jsx"
+import "./App.css";
+import SearchbarComponents from "./components/SearchbarComponents.jsx";
+import WeatherDisplayComponents from "./components/WeatherDisplayComponents";
+import { useState } from "react";
 
 function App() {
-
+  const [weather, setWeather] = useState();
   return (
     <>
-        <SearchbarComponents />
+      <SearchbarComponents />
+      {weather !== null && <WeatherDisplayComponents />}
     </>
   );
 }

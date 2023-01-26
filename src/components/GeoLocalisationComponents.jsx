@@ -1,38 +1,53 @@
-import { useState } from 'react'
-import MeteoComponents from "./MeteoComponents";
+import { useEffect } from "react";
+import axios from "axios";
 
-function GeoLocalisationComponents() {
-    const [location, setLocation] = useState(null);
+function GeoLocalisationComponents(props) {
+  const { location, setLocation, setSearchTerm, setChoosenCityCoordinates } =
+    props;
 
-    const getLocation = () => {
-        if (!navigator.geolocation) {
-            alert("Votre navigateur ne prend pas en charge l'API de géolocalisation.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
-            },
-            (error) => {
-                alert("Impossible de récupérer votre position : " + error.message);
-            }
-        );
-    };
-
-    return (
-        <div>
-            <button onClick={getLocation}>Récupérer ma position</button>
-            {location ? (
-                <p>Latitude : {location.latitude} / Longitude : {location.longitude}</p>
-            ) : (
-                <p>Aucune position n'a été récupérée</p>
-            )}
-        </div>
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      alert(
+        "Votre navigateur ne prend pas en charge l'API de géolocalisation."
+      );
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        alert("Impossible de récupérer votre position : " + error.message);
+      }
     );
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      const url =
+        "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
+        location.latitude +
+        "&lon=" +
+        location.longitude;
+      axios(url).then((res) => {
+        if (res.data.address.city) {
+          console.log(res.data.address.city);
+          setSearchTerm(res.data.address.city);
+          setChoosenCityCoordinates({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          });
+        } else {
+          console.log("city not found");
+        }
+      });
+    }
+  }, [location]);
+
+  return <></>;
 }
 
 export default GeoLocalisationComponents

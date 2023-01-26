@@ -14,6 +14,7 @@ function MeteoComponents(choosenCityCoordinates) {
     const url = "https://api.open-meteo.com/v1/forecast?latitude="+latitude+"&longitude="+longitude+"&hourly=temperature_2m"
     axios.get(url).then(r => {
       console.log(r);
+      console.log(url);
       setMeteo(r.data.latitude);
     })
   },[])
