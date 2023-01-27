@@ -8,6 +8,7 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState(null);
   const [choosenCity, setChoosenCity] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
   /*{weather !== null && (
         <WeatherDisplayComponents weather={weather} location={location} />

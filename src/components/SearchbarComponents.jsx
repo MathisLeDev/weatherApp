@@ -44,6 +44,7 @@ function SearchbarComponents(props) {
     event.preventDefault();
     if (suggestions.length > 0) {
       setChoosenCity(suggestions[0]);
+      console.log("sbmit");
     }
   };
 
