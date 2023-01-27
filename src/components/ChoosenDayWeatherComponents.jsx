@@ -28,7 +28,6 @@ function ChoosenDayWeatherComponents(props) {
         timezone;
       axios(url).then((response) => {
         setWeatherOfTheDay(response.data);
-        console.log(response.data);
       });
     }
   }, [choosenDay]);
