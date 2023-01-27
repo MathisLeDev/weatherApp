@@ -7,8 +7,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function SearchbarComponents(props) {
-  const { setChoosenCity, location } = props;
-  const [textValue, setTextValue] = useState("");
+  const { setChoosenCity, location, textValue, setTextValue } = props;
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
@@ -18,6 +17,12 @@ function SearchbarComponents(props) {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (textValue.length > 2) {
+      checkForSuggestions(textValue);
+    }
+  }, [textValue]);
+
   const getCityNameFromLocation = () => {
     const url =
       "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
@@ -26,7 +31,6 @@ function SearchbarComponents(props) {
       location.longitude;
     axios(url).then((response) => {
       setTextValue(response.data.address.city);
-      checkForSuggestions(response.data.address.city);
     });
   };
 
@@ -44,7 +48,8 @@ function SearchbarComponents(props) {
     event.preventDefault();
     if (suggestions.length > 0) {
       setChoosenCity(suggestions[0]);
-      console.log("sbmit");
+
+      localStorage.setItem("lastCity", JSON.stringify(suggestions[0]));
     }
   };
 
