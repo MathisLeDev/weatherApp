@@ -14,21 +14,16 @@ function StorageComponents(props) {
 
   useEffect(() => {
     const cityHistory = JSON.parse(localStorage.getItem("cityHistory")); //recup l'historique
-    console.log(cityHistory);
     const updatedCityHistory = [];
-
     if (cityHistory) {
       for (let i = 0; i < cityHistory.length; i++) {
         updatedCityHistory.push(cityHistory[i]);
       }
     }
-    if (choosenCity) {
+    if (choosenCity.name !== "") {
       updatedCityHistory.push(choosenCity);
-      console.log("AJOUTE");
       localStorage.setItem("cityHistory", JSON.stringify(updatedCityHistory));
     }
-    console.log(updatedCityHistory);
-    console.log(updatedCityHistory.length);
     if (updatedCityHistory.length > 2) {
       setCityHistory(updatedCityHistory);
     }
@@ -38,7 +33,7 @@ function StorageComponents(props) {
     if (lastCity) {
       return (
         <li>
-          Derniere ville
+          Dernière ville
           <span id={lastCity.name} onClick={handleLastCityClick}>
             : {lastCity.name}
           </span>
@@ -61,26 +56,31 @@ function StorageComponents(props) {
   };
 
   const displayCityHistory = () => {
-    let cityNameMapped = [];
     if (cityHistory.length > 0) {
-      for (const city of cityHistory) {
-        cityNameMapped.push(city.name);
-      }
+      cityHistory.reverse();
+      return (
+        <ul>
+          {cityHistory.map((city) => (
+            <li>
+              <span
+                key={city.id}
+                id={city.id}
+                onClick={handleCityFromHistoryClick}
+              >
+                {city.name}
+              </span>
+            </li>
+          ))}
+        </ul>
+      );
     }
-    cityNameMapped = cityNameMapped.reverse();
-    return (
-      <ul>
-        {cityNameMapped.map((name, index) => (
-          <li key={index}>
-            <span onClick={() => handleCityFromHistoryClick(name)}>{name}</span>
-          </li>
-        ))}
-      </ul>
-    );
   };
 
   const handleCityFromHistoryClick = (e) => {
-    console.log(e);
+    console.log(e.target.id);
+    console.log(cityHistory);
+    console.log(cityHistory.find((element) => element.id == e.target.id));
+    setChoosenCity(cityHistory.find((element) => element.id == e.target.id));
   };
 
   return (

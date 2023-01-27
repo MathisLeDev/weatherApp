@@ -7,12 +7,12 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function SearchbarComponents(props) {
-  const { setChoosenCity, location, textValue, setTextValue } = props;
+  const { setChoosenCity, location, textValue, setTextValue, choosenCity } =
+    props;
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     if (location) {
-      console.log(location);
       getCityNameFromLocation();
     }
   }, [location]);
@@ -44,11 +44,14 @@ function SearchbarComponents(props) {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem("lastCity", JSON.stringify(choosenCity));
+  }, [choosenCity]);
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (suggestions.length > 0) {
       setChoosenCity(suggestions[0]);
-      localStorage.setItem("lastCity", JSON.stringify(suggestions[0]));
     }
   };
 
@@ -70,7 +73,7 @@ function SearchbarComponents(props) {
   const displaySuggestions = () => {
     if (suggestions.length > 0) {
       return (
-        <ul>
+        <ul className="suggestions btn w-75 text-start ">
           {suggestions.map((suggestion) => (
             <li key={suggestion.id} onClick={handleSuggestionClick}>
               {suggestion.name}
@@ -88,105 +91,24 @@ function SearchbarComponents(props) {
 
   return (
     <>
-      <form onSubmit={handleFormSubmit}>
+      <form
+        onSubmit={handleFormSubmit}
+        className="d-flex d-flex justify-content-center w-75 "
+      >
         <input
           type="text"
           placeholder="Rennes, Alençon..."
           value={textValue}
           onChange={handleTextChange}
+          className="bg-transparent border-end-0 border-start-0 border-top-0 w-75"
         />
-        <button type="submit">Envoyer</button>
+        <button type="submit" className="btn w-75">
+          Rechercher
+        </button>
       </form>
       {displaySuggestions()}
     </>
   );
-  /*const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState([]);
-  const [choosenCityCoordinates, setChoosenCityCoordinates] = useState();
-  const [choiceConfirmed, setChoiceConfirmed] = useState(false);
-  const [geoLocalisationConfirmed, setGeoLocalisationComponents] = useState(false);
-
-  
-  useEffect(()=>{
-    setGeoLocalisationComponents(true);
-  },[])
-
-
-  function handleChange(event) {
-    setSearchTerm(event.target.value);
-  }
-
-  function handleInput(event) {
-    setChoiceConfirmed(false);
-    event.preventDefault();
-    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${searchTerm}`)
-      .then((res) => res.json())
-      .then((data) => setResults(data.results));
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    setChoiceConfirmed(true);
-  }
-
-  const handleSuggestionSelect = (event) => {
-    const coordinates = event.target.attributes[0].value;
-    const coordinatesSplitted = coordinates.split(":");
-    setChoosenCityCoordinates({
-      latitude: coordinatesSplitted[0],
-      longitude: coordinatesSplitted[1],
-    });
-    setSearchTerm(event.target.innerHTML);
-  };
-
- 
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleChange}
-          onInput={handleInput}
-        />
-        <button type="submit" className="btn btn-primary">
-          Search
-        </button>
-      </form>
-
-      {results != null
-        ? results.map((result) => (
-            <li
-              key={result.id}
-              value={result.latitude + ":" + result.longitude}
-              onClick={handleSuggestionSelect}
-            >
-              {result.name}
-            </li>
-          ))
-        : ""}
-
-      {choiceConfirmed !== false ? (
-        <MeteoComponents
-          choosenCityCoordinates={choosenCityCoordinates}
-          setWeather={setWeather}
-        />
-      ) : (
-        ""
-      )}
-      {geoLocalisationConfirmed !== false ? (
-        <GeoLocalisationComponents
-          location={location}
-          setLocation={setLocation}
-          setSearchTerm={setSearchTerm}
-          setChoosenCityCoordinates={setChoosenCityCoordinates}
-        />
-      ) : (
-        ""
-      )}
-    </div>
-  );*/
 }
 
 export default SearchbarComponents;

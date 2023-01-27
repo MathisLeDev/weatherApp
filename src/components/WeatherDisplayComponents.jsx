@@ -7,7 +7,7 @@ function WeatherDisplayComponents(props) {
   const { choosenCity } = props;
   const [choosenDay, setChoosenDay] = useState("");
   useEffect(() => {
-    if (choosenCity) {
+    if (choosenCity.name !== "") {
       const latitude = choosenCity.latitude;
       const longitude = choosenCity.longitude;
       const timezone = choosenCity.timezone;
@@ -47,7 +47,7 @@ function WeatherDisplayComponents(props) {
               id={weather.time}
               onClick={handleDaySelection}
             >
-              {weather.tempMin}
+              {weather.time}
             </li>
           ))}
         </ul>
