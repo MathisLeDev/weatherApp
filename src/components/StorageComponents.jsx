@@ -13,10 +13,15 @@ function StorageComponents(props) {
   const displayLastCity = () => {
     if (lastCity) {
       return (
-        <li id={lastCity.name} onClick={handleLastCityClick}>
-          lastCity: {lastCity.name}
+        <li>
+          <span id={lastCity.name} onClick={handleLastCityClick}>
+            lastCity: {lastCity.name}
+          </span>
+          <button onClick={handleLastCityDelete}> Del</button>
         </li>
       );
+    } else {
+      return <> votre historique est vide</>;
     }
   };
 
@@ -24,6 +29,12 @@ function StorageComponents(props) {
     setChoosenCity(lastCity);
     setTextValue(lastCity.name);
   };
+
+  const handleLastCityDelete = (e) => {
+    localStorage.removeItem("lastCity");
+    setLastCity();
+  };
+
   return (
     <div>
       StorageComponents
