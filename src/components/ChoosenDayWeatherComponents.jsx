@@ -14,8 +14,11 @@ function ChoosenDayWeatherComponents(props) {
         latitude +
         "&longitude=" +
         longitude +
-        "&daily=temperature_2m_max" +
-        "&daily=temperature_2m_min" +
+        "&daily=temperature_2m_max," +
+        "temperature_2m_min," +
+        "windspeed_10m_max," +
+        "winddirection_10m_dominant," +
+        "weathercode" +
         "&current_weather=true" +
         "&start_date=" +
         choosenDay +
@@ -25,6 +28,7 @@ function ChoosenDayWeatherComponents(props) {
         timezone;
       axios(url).then((response) => {
         setWeatherOfTheDay(response.data);
+        console.log(response.data);
       });
     }
   }, [choosenDay]);
@@ -35,9 +39,11 @@ function ChoosenDayWeatherComponents(props) {
         <ul>
           <li>min:{weatherOfTheDay.daily.temperature_2m_min}</li>
           <li>min:{weatherOfTheDay.daily.temperature_2m_max}</li>
-          <li>currentWeather:{weatherOfTheDay.current_weather.weathercode}</li>
-          <li>windDirection:{weatherOfTheDay.current_weather.winddirection}</li>
-          <li>windSpeed:{weatherOfTheDay.current_weather.windspeed}</li>
+          <li>currentWeather:{weatherOfTheDay.daily.weathercode}</li>
+          <li>
+            windDirection:{weatherOfTheDay.daily.winddirection_10m_dominant}
+          </li>
+          <li>windSpeed:{weatherOfTheDay.daily.windspeed_10m_max}</li>
         </ul>
       );
     }
