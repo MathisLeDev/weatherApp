@@ -10,6 +10,7 @@ function SearchbarComponents(props) {
   const { setChoosenCity, location, textValue, setTextValue, choosenCity } =
     props;
   const [suggestions, setSuggestions] = useState([]);
+  const [isSearchBarActive, setIsSearchBarActive] = useState(false);
 
   useEffect(() => {
     if (location) {
@@ -73,7 +74,10 @@ function SearchbarComponents(props) {
   const displaySuggestions = () => {
     if (suggestions.length > 0) {
       return (
-        <ul className="suggestions btn w-75 text-start ">
+        <ul
+          className="suggestions btn w-75 text-start "
+          onBlur={handleFocusEvent}
+        >
           {suggestions.map((suggestion) => (
             <li key={suggestion.id} onClick={handleSuggestionClick}>
               {suggestion.name}
@@ -87,6 +91,12 @@ function SearchbarComponents(props) {
   const handleSuggestionClick = (event) => {
     setTextValue(event.target.innerHTML);
     checkForSuggestions(event.target.innerHTML);
+    setIsSearchBarActive(false);
+  };
+
+  const handleFocusEvent = (event) => {
+    console.log("de");
+    setIsSearchBarActive(true);
   };
 
   return (
@@ -101,12 +111,13 @@ function SearchbarComponents(props) {
           value={textValue}
           onChange={handleTextChange}
           className="bg-transparent border-end-0 border-start-0 border-top-0 w-75"
+          onFocus={handleFocusEvent}
         />
         <button type="submit" className="btn w-75">
           Rechercher
         </button>
       </form>
-      {displaySuggestions()}
+      {isSearchBarActive && displaySuggestions()}
     </>
   );
 }

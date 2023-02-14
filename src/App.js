@@ -48,7 +48,7 @@ function App() {
 
       <div className="card w-75 h-25 rounded-5">
         <div className="card-header w-75 bg-body border-0 h-25 bg-transparent">
-          <span></span>
+          <WeatherDisplayComponents choosenCity={choosenCity} />
         </div>
       </div>
       <div className="card w-75 h-25 rounded-5">
@@ -58,7 +58,11 @@ function App() {
       </div>
       <div className="card w-75 h-25 rounded-5">
         <div className="card-header w-75 bg-body border-0 h-25 bg-transparent">
-          <span></span>
+          <StorageComponents
+            setChoosenCity={setChoosenCity}
+            setTextValue={setTextValue}
+            choosenCity={choosenCity}
+          />
         </div>
       </div>
     </section>
