@@ -7,8 +7,14 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function SearchbarComponents(props) {
-  const { setChoosenCity, location, textValue, setTextValue, choosenCity } =
-    props;
+  const {
+    setChoosenCity,
+    location,
+    textValue,
+    setTextValue,
+    choosenCity,
+    setTimezone,
+  } = props;
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchBarActive, setIsSearchBarActive] = useState(false);
 
@@ -24,6 +30,12 @@ function SearchbarComponents(props) {
     }
   }, [textValue]);
 
+  useEffect(() => {
+    if (location) {
+      getCityNameFromLocation();
+    }
+  }, [location]);
+
   const getCityNameFromLocation = () => {
     const url =
       "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
@@ -31,7 +43,18 @@ function SearchbarComponents(props) {
       "&lon=" +
       location.longitude;
     axios(url).then((response) => {
+      console.log(response);
       setTextValue(response.data.address.city);
+
+      const url =
+        "https://geocoding-api.open-meteo.com/v1/search?name=" +
+        response.data.address.city;
+      axios(url).then((res) => {
+        if (res.data.results) {
+          setChoosenCity(res.data.results[0]);
+          console.log(res.data.results);
+        }
+      });
     });
   };
 
@@ -66,6 +89,8 @@ function SearchbarComponents(props) {
     const url = "https://geocoding-api.open-meteo.com/v1/search?name=" + city;
     axios(url).then((res) => {
       if (res.data.results) {
+        console.log(res.data);
+        setTimezone(res.data.results[0].timezone);
         setSuggestions(res.data.results);
       }
     });
@@ -75,11 +100,15 @@ function SearchbarComponents(props) {
     if (suggestions.length > 0) {
       return (
         <ul
-          className="suggestions btn w-75 text-start "
+          className="suggestions btn w-75 text-start suggestions-list"
           onBlur={handleFocusEvent}
         >
           {suggestions.map((suggestion) => (
-            <li key={suggestion.id} onClick={handleSuggestionClick}>
+            <li
+              className="suggestion-container"
+              key={suggestion.id}
+              onClick={handleSuggestionClick}
+            >
               {suggestion.name}
             </li>
           ))}
