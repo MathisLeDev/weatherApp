@@ -6,14 +6,12 @@ import GeoLocalisationComponents from "./components/GeoLocalisationComponents";
 import StorageComponents from "./components/StorageComponents";
 import ChoosenDayWeatherComponents from "./components/ChoosenDayWeatherComponents";
 import axios from "axios";
-import sunny from "./assets/wi-day-sunny.svg";
-import partiallycloudy from "./assets/wi-cloudy.svg";
-import fog from "./assets/wi-day-fog.svg";
-import rainy from "./assets/wi-day-rain.svg";
-import raindrops from "./assets/wi-raindrops.svg";
-import hail from "./assets/wi-day-hail.svg";
-import snow from "./assets/wi-snow.svg";
-import lightning from "./assets/wi-lightning.svg";
+import sunny from "./img/wi-day-sunny.svg";
+import partiallycloudy from "./img/wi-cloudy.svg";
+import fog from "./img/wi-day-fog.svg";
+import rainy from "./img/wi-day-rain.svg";
+import snow from "./img/wi-snow.svg";
+import lightning from "./img/wi-lightning.svg";
 import WeatherDisplayOfSelectedDay from "./components/WeatherDisplayOfSelectedDay";
 
 function App() {
@@ -62,19 +60,19 @@ function App() {
         icon = rainy;
         break;
       case 61:
-        icon = raindrops;
+        icon = rainy;
         break;
       case 63:
-        icon = raindrops;
+        icon = rainy;
         break;
       case 65:
-        icon = raindrops;
+        icon = rainy;
         break;
       case 66:
-        icon = hail;
+        icon = partiallycloudy;
         break;
       case 67:
-        icon = hail;
+        icon = partiallycloudy;
         break;
       case 71:
         icon = snow;
@@ -86,7 +84,7 @@ function App() {
         icon = snow;
         break;
       case code == 77:
-        icon = hail;
+        icon = partiallycloudy;
         break;
       case 80:
         icon = lightning;
@@ -107,10 +105,10 @@ function App() {
         icon = lightning;
         break;
       case 96:
-        icon = hail;
+        icon = partiallycloudy;
         break;
       case 99:
-        icon = hail;
+        icon = partiallycloudy;
         break;
       default:
         icon = "";
