@@ -11,12 +11,14 @@ function WeatherDisplayOfSelectedDay(props) {
       console.log(currentHour);
       const test = 24 - parseInt(currentHour);
       console.log(test);
-      for (currentHour; currentHour < 24 + test; currentHour++) {
+        console.log("weather", weather);
+      for (currentHour; currentHour < 48-test; currentHour++) {
         dailyWeatherPushed.push({
           time: weather.hourly.time[currentHour].split("T")[1],
           temperature_2m: weather.hourly.temperature_2m[currentHour],
           weathercode: weather.hourly.weathercode[currentHour],
         });
+        console.log(currentHour);
       }
       setDailyWeather(dailyWeatherPushed);
       console.log(dailyWeatherPushed);
