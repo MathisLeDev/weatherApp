@@ -1,38 +1,143 @@
-.App {
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #ffffff;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 236, 210, 1));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 236, 210, 1))
+}
+
+.carousel-indicators li {
+  background-color: #282828;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.vh-100 {
+  background-color: #C1CFEA;
+}
+
+form {
+  width: 100%;
+
+}
+
+
+.suggestions :hover{
+  background-color: white;
+}
+
+.suggestions {
+  display: inline-block;
+  position: absolute;
+  top: 50px;
+
+}
+
+ul {
+  list-style-type: none;
+  position: relative;
+  z-index: 1;
+}
+
+.weekly-weather-display-container {
+  width: 100%;
+  height: 80%;
+  background-color: red;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+
+.weekly-weather-display-each-day {
+  display: grid;
+}
+
+.weekly-weather-display-data {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-size: 13px;
+}
+
+.card-primary-container {
+  display: flex;
+}
+
+.card-primary-left-display {
+  font-size: 40px;
+
+  flex: 0.5;
+  height: 100%;
+  padding: 2%;
+}
+
+.card-primary-left-display ul {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.li-secondary {
+  font-size: 16px;
+  color: dimgray;
+}
+.suggestions-list {
+  z-index: 2;
+}
+
+.card-primary-right-display {
+  flex: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 70px;
+}
+
+.card-primary-right-display img {
+  height: 100%;
+  width: 100%;
+}
+
+.suggestion-container {
+  background-color: white;
+}
+
+.suggestion-container:hover {
+  background-color: gray;
+}
+
+.secondary-card-weather-display-container {
+  display: flex;
+  overflow: scroll;
+  height: 100%;
+  padding: 0!important;
+  margin: 0!important;
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.secondary-card-weather-display-container ul {
+  text-align: center ;
+  padding: 10px!important;
+  margin: 0!important;
+height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.secondary-card-weather-display-container ul li {
+  padding: 0!important;
+  margin: 0!important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.secondary-card-weather-display-container img {
+  width: 100%;
 }
