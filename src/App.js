@@ -23,6 +23,12 @@ function App() {
   const [choosenDay, setChoosenDay] = useState("");
   const [timezone, setTimezone] = useState(null);
 
+
+  /**
+   * return l'icone associé au code météo selon la documentation de l'api utilisée. ex: weathercode = 0 équivaut à un temps ensoleillé
+   * @param code
+   * @returns {string}
+   */
   const getIconWeatherCode = (code) => {
     let icon;
     switch (code) {
@@ -83,7 +89,7 @@ function App() {
       case 75:
         icon = snow;
         break;
-      case code == 77:
+      case 77:
         icon = partiallycloudy;
         break;
       case 80:
@@ -101,7 +107,7 @@ function App() {
       case 86:
         icon = snow;
         break;
-      case code == 95:
+      case 95:
         icon = lightning;
         break;
       case 96:
@@ -117,6 +123,12 @@ function App() {
     return icon;
   };
 
+
+  /**
+   * renvoie la description textuelle du weathercode de sa météo.
+   * @param code int qui correspond au weathercode de l'api utilisé.
+   * @returns {string}
+   */
   const getDescriptionWeatherCode = (code) => {
     let description = "--";
     switch (code) {
@@ -215,6 +227,100 @@ function App() {
     setTextValue(choosenCity.name);
   }, [choosenCity]);
 
+
+  /**
+   * Est appelé à chaque changement de choosenCity et de timezone.
+   * Ce qui correspond au moment où l'utilisateur change de ville.
+   * Appelle alors d'un GET pour avoir le temps actuelle, de la journée h/h et de la semaine en j/j
+   * exemple JSON type:  {
+   *     "latitude": 48.11,
+   *     "longitude": -1.6700001,
+   *     "generationtime_ms": 1.7910003662109375,
+   *     "utc_offset_seconds": 7200,
+   *     "timezone": "Europe/Paris",
+   *     "timezone_abbreviation": "CEST",
+   *     "elevation": 44.0,
+   *     "current_weather": {
+   *         "temperature": 11.6,
+   *         "windspeed": 20.8,
+   *         "winddirection": 332.0,
+   *         "weathercode": 0,
+   *         "time": "2023-03-26T19:00"
+   *     },
+   *     "hourly_units": {
+   *         "time": "iso8601",
+   *         "temperature_2m": "°C",
+   *         "weathercode": "wmo code"
+   *     },
+   *     "hourly": {
+   *         "time": [
+   *             "2023-03-26T00:00",
+   *             "2023-03-26T01:00",
+   *             "2023-03-26T02:00",
+   *             "2023-03-26T03:00",
+   *             "2023-03-26T04:00"
+   *         ],
+   *         "temperature_2m": [
+   *             9.4,
+   *             9.5,
+   *             10.7,
+   *             10.0,
+   *             9.4
+   *         ],
+   *         "weathercode": [
+   *             51,
+   *             53,
+   *             55,
+   *             3,
+   *             3
+   *         ]
+   *     },
+   *     "daily_units": {
+   *         "time": "iso8601",
+   *         "temperature_2m_max": "°C",
+   *         "temperature_2m_min": "°C",
+   *         "weathercode": "wmo code"
+   *     },
+   *     "daily": {
+   *         "time": [
+   *             "2023-03-26",
+   *             "2023-03-27",
+   *             "2023-03-28",
+   *             "2023-03-29",
+   *             "2023-03-30",
+   *             "2023-03-31",
+   *             "2023-04-01"
+   *         ],
+   *         "temperature_2m_max": [
+   *             12.3,
+   *             13.6,
+   *             14.2,
+   *             17.7,
+   *             14.3,
+   *             12.7,
+   *             11.6
+   *         ],
+   *         "temperature_2m_min": [
+   *             7.8,
+   *             3.7,
+   *             6.1,
+   *             10.1,
+   *             10.8,
+   *             8.7,
+   *             6.8
+   *         ],
+   *         "weathercode": [
+   *             61,
+   *             3,
+   *             51,
+   *             3,
+   *             80,
+   *             80,
+   *             3
+   *         ]
+   *     }
+   * }
+   */
   useEffect(() => {
     if (choosenCity.name !== "" && timezone) {
       const latitude = choosenCity.latitude;
@@ -235,6 +341,9 @@ function App() {
         "&hourly=temperature_2m,weathercode" +
         "&timezone=" +
         timezone;
+      console.log(url)
+      //GET vers l'API
+
       axios(url).then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -244,6 +353,11 @@ function App() {
     }
   }, [choosenCity, timezone]);
 
+
+  /**
+   * App.js est la racine du projet. Elle contient toutes les branches (composants) qu'elle appelle (ex: <SearchbarComponents ../>) Ces composants peuvent à leurs tours appeler des composants.
+   * La documentation et commentaire de ces composants sont situé à l'intérieur d'eux-mêmes.
+   */
   return (
     <section className="vh-100 flex-column d-flex justify-content-around align-items-center ">
       <SearchbarComponents
