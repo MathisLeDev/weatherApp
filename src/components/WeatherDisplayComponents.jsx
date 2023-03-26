@@ -27,20 +27,19 @@ function WeatherDisplayComponents(props) {
   };
 
   useEffect(() => {
-    if (weather) {
-      const weeklyWeatherPushed = [];
-      console.log(weather);
-      for (let i = 0; i < weather.daily.time.length; i++) {
+    if (weather) { // Vérifie si l'objet weather est présent
+      const weeklyWeatherPushed = []; // Initialise un tableau vide pour stocker les données hebdomadaires
+      for (let i = 0; i < weather.daily.time.length; i++) { // Boucle sur les données journalières pour remplir le tableau hebdomadaire
         weeklyWeatherPushed.push({
-          temperature_2m_max: weather.daily.temperature_2m_max[i],
-          temperature_2m_min: weather.daily.temperature_2m_min[i],
-          time: getDayName(weather.daily.time[i]),
-          weathercode: weather.daily.weathercode[i],
+          temperature_2m_max: weather.daily.temperature_2m_max[i], // Ajoute la température maximale à l'objet poussé dans le tableau
+          temperature_2m_min: weather.daily.temperature_2m_min[i], // Ajoute la température minimale à l'objet poussé dans le tableau
+          time: getDayName(weather.daily.time[i]), // Ajoute le nom du jour de la semaine à l'objet poussé dans le tableau en utilisant la fonction getDayName
+          weathercode: weather.daily.weathercode[i], // Ajoute le code météo à l'objet poussé dans le tableau
         });
       }
-      setWeeklyWeather(weeklyWeatherPushed);
+      setWeeklyWeather(weeklyWeatherPushed); // Définit les données hebdomadaires en utilisant le tableau rempli
     }
-  }, [weather]);
+  }, [weather]); // Exécute l'effet lorsque l'objet weather est modifié
 
   // Cette fonction permet d'interpreter le weatherCode renvoyé par l'api et ainsi envoyé la bonne description
 

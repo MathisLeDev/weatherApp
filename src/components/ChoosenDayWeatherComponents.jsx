@@ -10,13 +10,12 @@ function ChoosenDayWeatherComponents(props) {
   } = props;
 
   useEffect(() => {
-    if (weather !== null) {
-      console.log(weather);
-      setActualTemp(weather.current_weather.temperature);
-      setActualCity(choosenCity);
-      setActualWeatherCode(weather.current_weather.weathercode);
+    if (weather !== null) { // Vérifie si l'objet weather est présent et n'est pas nul
+      setActualTemp(weather.current_weather.temperature); // Définit la température actuelle en utilisant la température renvoyée par l'API météo
+      setActualCity(choosenCity); // Définit la ville actuelle en utilisant la ville choisie par l'utilisateur
+      setActualWeatherCode(weather.current_weather.weathercode); // Définit le code météo actuel en utilisant le code météo renvoyé par l'API météo
     }
-  }, [weather]);
+  }, [weather]); // Exécute l'effet lorsque l'objet weather est modifié
 
   const [actualTemp, setActualTemp] = useState(0);
   const [actualCity, setActualCity] = useState("");

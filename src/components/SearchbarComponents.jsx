@@ -55,22 +55,26 @@ function SearchbarComponents(props) {
      * return le nom de la ville fonction de la latitude et longitude du useState location.
      */
     const getCityNameFromLocation = () => {
+        // Construction de l'URL pour obtenir le nom de la ville en fonction de la localisation actuelle
         const url =
             "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
             location.latitude +
             "&lon=" +
             location.longitude;
         axios(url).then((response) => {
-            console.log(response);
-            setTextValue(response.data.address.city);
+            setTextValue(response.data.address.city); // Définit la valeur du texte en fonction du nom de la ville renvoyé par l'API
 
+            // Appel de l'API en utilisant axios pour obtenir le nom de la ville à partir de la localisation actuelle
             const url =
                 "https://geocoding-api.open-meteo.com/v1/search?name=" +
                 response.data.address.city;
+
+
+            // Appel de l'API en utilisant axios pour obtenir des informations sur la ville
             axios(url).then((res) => {
+                // Vérifie si l'API renvoie des résultats
                 if (res.data.results) {
-                    setChoosenCity(res.data.results[0]);
-                    console.log(res.data.results);
+                    setChoosenCity(res.data.results[0]); // Définit la ville choisie en utilisant le premier résultat renvoyé par l'API
                 }
             });
         });
@@ -103,18 +107,27 @@ function SearchbarComponents(props) {
     };
 
     const checkForSuggestions = (currentText) => {
-        let city = "";
+        let city = ""; // Initialisation de la variable city à une chaîne vide
+
+
+        // Vérifie si currentText est défini
         if (currentText) {
-            city = currentText;
+            city = currentText; // Assignation de la valeur de currentText à la variable city si elle est définie
         } else {
-            city = textValue;
+            city = textValue; // Si currentText n'est pas défini, assigne la valeur de textValue à la variable city
         }
+
+
+        // Construction de l'URL pour la recherche de suggestions de villes
         const url = "https://geocoding-api.open-meteo.com/v1/search?name=" + city;
+
+        // Appel de l'API en utilisant axios pour obtenir des suggestions de villes
         axios(url).then((res) => {
+
+            // Vérifie si l'API renvoie des résultats
             if (res.data.results) {
-                console.log(res.data);
-                setTimezone(res.data.results[0].timezone);
-                setSuggestions(res.data.results);
+                setTimezone(res.data.results[0].timezone); // Définit le fuseau horaire en fonction du premier résultat retourné par l'API
+                setSuggestions(res.data.results); // Définit les suggestions de villes en utilisant les résultats renvoyés par l'API
             }
         });
     };

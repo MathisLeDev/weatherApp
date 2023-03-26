@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 
+/**
+ * prototype d'utilisation du localstorage en cours... Pas implémenté pour le moment
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function StorageComponents(props) {
   const { setChoosenCity, setTextValue, choosenCity } = props;
   const [lastCity, setLastCity] = useState("");
