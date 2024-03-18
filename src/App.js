@@ -13,9 +13,20 @@ import rainy from "./img/wi-day-rain.svg";
 import snow from "./img/wi-snow.svg";
 import lightning from "./img/wi-lightning.svg";
 import WeatherDisplayOfSelectedDay from "./components/WeatherDisplayOfSelectedDay";
+import PrimaryCard from "./v2/components/primaryCard/primaryCard";
+import HourCard from "./v2/components/hourCard/hourCard";
 
 function App() {
-  const [weather, setWeather] = useState(null);
+
+  const [weather, setWeather] = useState({
+    current_weather : {
+      temperature: 0,
+      weathercode: 0,
+
+
+    },
+
+  });
   const [location, setLocation] = useState(null);
   const [choosenCity, setChoosenCity] = useState({ name: "--" });
   const [suggestions, setSuggestions] = useState([]);
@@ -225,6 +236,7 @@ function App() {
 
   useEffect(() => {
     setTextValue(choosenCity.name);
+    console.log(choosenCity)
   }, [choosenCity]);
 
 
@@ -354,51 +366,52 @@ function App() {
   }, [choosenCity, timezone]);
 
 
+
+
   /**
    * App.js est la racine du projet. Elle contient toutes les branches (composants) qu'elle appelle (ex: <SearchbarComponents ../>) Ces composants peuvent à leurs tours appeler des composants.
    * La documentation et commentaire de ces composants sont situé à l'intérieur d'eux-mêmes.
    */
-  return (
-    <section className="vh-100 flex-column d-flex justify-content-around align-items-center ">
-      <SearchbarComponents
-        location={location}
-        setChoosenCity={setChoosenCity}
-        textValue={textValue}
-        setTextValue={setTextValue}
-        choosenCity={choosenCity}
-        setTimezone={setTimezone}
-      />
-      <GeoLocalisationComponents setLocation={setLocation} />
 
-      <div className="card w-75 h-25 rounded-5">
-        <ChoosenDayWeatherComponents
-          choosenDay={choosenDay}
-          choosenCity={choosenCity}
-          weather={weather}
-          getIconWeatherCode={getIconWeatherCode}
-          getDescriptionWeatherCode={getDescriptionWeatherCode}
-        />
-      </div>
-      <div className="card w-75 h-25 rounded-5">
-        <div className="card-header w-100 bg-body border-0 h-100 bg-transparent">
-          <WeatherDisplayOfSelectedDay
-            weather={weather}
-            getIconWeatherCode={getIconWeatherCode}
-          />
-        </div>
-      </div>
-      <div className="card w-75 h-25 rounded-5">
-        <div className="card-header w-100 bg-body border-0 h-100 bg-transparent">
-          <WeatherDisplayComponents
+
+  const [mode, setMode] = useState("C" || "F");
+  const [weatherIcon, setWeatherIcon] = useState("");
+
+  const handleChangeLocationClick = (e) => {
+    e.preventDefault();
+    setChoosenCity({ name: "--" });
+  }
+
+  return (
+      <div className={"min-h-screen  bg-black flex flex-col"}>
+
+        <SearchbarComponents
+            setChoosenCity={setChoosenCity}
+          location={location}
+            textValue={textValue}
+            setTextValue={setTextValue}
             choosenCity={choosenCity}
-            setChoosenDay={setChoosenDay}
-            getDescriptionWeatherCode={getDescriptionWeatherCode}
-            weather={weather}
-            getIconWeatherCode={getIconWeatherCode}
-          />
+            setTimezone={setTimezone}
+        />
+
+
+        <div className={"flex flex-row justify-between"}>
+          <div className={"p-10 mr-auto"}>
+            <PrimaryCard temp={weather.current_weather.temperature} mode={mode} setMode={setMode} icon={getIconWeatherCode(weather.current_weather.weathercode)} weatherStr={getDescriptionWeatherCode(weather.current_weather.weathercode)} City={choosenCity.name} Country={choosenCity.country} handleChangeLocationClick={handleChangeLocationClick} />
+          </div>
+
+          <div className={"p-10 ml-auto"}>
+            <HourCard />
+          </div>
+
+
+
         </div>
+
+
+
+
       </div>
-    </section>
   );
 }
 

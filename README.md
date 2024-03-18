@@ -6,8 +6,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm install axios`
-
 ### `npm start`
 
 ## 🚧THIS IS AN APP FOR MOBILE. IT'S NOT OPTIMIZED FOR DESKTOP DISPLAY 🚧.

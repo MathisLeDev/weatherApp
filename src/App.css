@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .gradient-custom {
   /* fallback for old browsers */
   background: #ffffff;
