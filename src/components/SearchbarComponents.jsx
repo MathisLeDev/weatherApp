@@ -1,8 +1,5 @@
-import localisationImg from "../img/localisation_icon.png";
 import "bootstrap/dist/css/bootstrap.css";
 import React, {useState} from "react";
-import MeteoComponents from "./MeteoComponents";
-import GeoLocalisationComponents from "./GeoLocalisationComponents";
 import {useEffect} from "react";
 import axios from "axios";
 
@@ -136,12 +133,12 @@ function SearchbarComponents(props) {
         if (suggestions.length > 0) {
             return (
                 <ul
-                    className="suggestions btn w-75 text-start suggestions-list"
+                    className="absolute mt-[470px] w-[500px] mr-[115px] bg-black/40 rounded-xl p-1"
                     onBlur={handleFocusEvent}
                 >
                     {suggestions.map((suggestion) => (
                         <li
-                            className="suggestion-container"
+                            className=" p-2 rounded-xl hover:bg-black/60 cursor-pointer text-gray-200 "
                             key={suggestion.id}
                             onClick={handleSuggestionClick}
                         >
@@ -165,25 +162,25 @@ function SearchbarComponents(props) {
     };
 
     return (
-        <>
+        <div className={" z-10 mx-auto flex flex-row relative items-center justify-center "}>
             <form
                 onSubmit={handleFormSubmit}
-                className="d-flex d-flex justify-content-center w-75 "
+                className="flex flex-row items-center justify-center rounded-lg "
             >
                 <input
                     type="text"
                     placeholder="Rennes, Alençon..."
                     value={textValue}
                     onChange={handleTextChange}
-                    className="bg-transparent border-end-0 border-start-0 border-top-0 w-75"
+                    className="w-[500px]  px-2 py-2.5 text-gray-200 bg-black/40 rounded-l-xl backdrop-blur"
                     onFocus={handleFocusEvent}
                 />
-                <button type="submit" className="btn w-75">
+                <button type="submit" className={"p-2 rounded-r-xl text-gray-300 text-lg  bg-black/40 hover:bg-black/70 backdrop-blur"}>
                     Rechercher
                 </button>
             </form>
             {isSearchBarActive && displaySuggestions()}
-        </>
+        </div>
     );
 }
 

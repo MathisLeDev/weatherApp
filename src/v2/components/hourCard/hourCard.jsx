@@ -29,13 +29,13 @@ const HourCard = () => {
 
 
     return (
-        <div className={"py-4 px-8 ml-auto border"}>
+        <div className={"py-4 px-8 ml-auto  backdrop-blur rounded-md bg-black/30"}>
             <h1 className={"font-bold text-4xl text-white text-end"}>
                 {loading ? <span className={"loading"}/> :
                     `${hours}:${minutes} ${ampm}`
                 }
             </h1>
-            <h2 className={"font-semibold text-xl text-gray-400"}>
+            <h2 className={"font-light text-xl text-gray-300"}>
                 {loading ? <span className={"loading"}/> :
                 `${dayString}, ${dayNumber} ${monthString} ${year}`
                 }

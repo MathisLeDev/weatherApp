@@ -1,20 +1,22 @@
 import "./App.css";
 import SearchbarComponents from "./components/SearchbarComponents.jsx";
-import WeatherDisplayComponents from "./components/WeatherDisplayComponents";
 import { useEffect, useState } from "react";
-import GeoLocalisationComponents from "./components/GeoLocalisationComponents";
-import StorageComponents from "./components/StorageComponents";
-import ChoosenDayWeatherComponents from "./components/ChoosenDayWeatherComponents";
 import axios from "axios";
-import sunny from "./img/wi-day-sunny.svg";
 import partiallycloudy from "./img/wi-cloudy.svg";
+import sunny from "./img/wi-day-sunny.svg";
 import fog from "./img/wi-day-fog.svg";
 import rainy from "./img/wi-day-rain.svg";
 import snow from "./img/wi-snow.svg";
 import lightning from "./img/wi-lightning.svg";
-import WeatherDisplayOfSelectedDay from "./components/WeatherDisplayOfSelectedDay";
 import PrimaryCard from "./v2/components/primaryCard/primaryCard";
 import HourCard from "./v2/components/hourCard/hourCard";
+import PrevisionCard from "./v2/components/previsionCard/previsionCard";
+import SecondaryCard from "./v2/components/secondaryCard/secondaryCard";
+import sunnyDay from "./assets/beautiful-day.jpg";
+import rainyDay from "./assets/rainy-day.jpg";
+import cloudyDay from "./assets/cloudy-day.jpg";
+import stormyDay from "./assets/stormy-day.jpg";
+
 
 function App() {
 
@@ -27,13 +29,73 @@ function App() {
     },
 
   });
-  const [location, setLocation] = useState(null);
   const [choosenCity, setChoosenCity] = useState({ name: "--" });
-  const [suggestions, setSuggestions] = useState([]);
   const [textValue, setTextValue] = useState("");
-  const [choosenDay, setChoosenDay] = useState("");
   const [timezone, setTimezone] = useState(null);
 
+
+  const getBackGround = (weatherCode) => {
+    switch (weatherCode) {
+      case 0:
+        return sunnyDay;
+      case 1:
+        return cloudyDay;
+      case 2:
+        return cloudyDay;
+      case 3:
+        return cloudyDay;
+      case 45:
+        return cloudyDay;
+      case 48:
+        return cloudyDay;
+      case 51:
+        return rainyDay;
+      case 53:
+        return rainyDay;
+      case 55:
+        return rainyDay;
+      case 56:
+        return rainyDay;
+      case 57:
+        return rainyDay;
+      case 61:
+        return rainyDay;
+      case 63:
+        return rainyDay;
+      case 65:
+        return rainyDay;
+      case 66:
+        return rainyDay;
+      case 67:
+        return rainyDay;
+      case 71:
+        return cloudyDay;
+      case 73:
+        return cloudyDay;
+      case 75:
+        return cloudyDay;
+      case 77:
+        return cloudyDay;
+      case 80:
+        return rainyDay;
+      case 81:
+        return rainyDay;
+      case 82:
+        return rainyDay;
+      case 85:
+        return cloudyDay;
+      case 86:
+        return cloudyDay;
+      case 95:
+        return stormyDay;
+      case 96:
+        return stormyDay;
+      case 99:
+        return stormyDay;
+        default:
+        return sunnyDay;
+    }
+  }
 
   /**
    * return l'icone associé au code météo selon la documentation de l'api utilisée. ex: weathercode = 0 équivaut à un temps ensoleillé
@@ -382,34 +444,38 @@ function App() {
     setChoosenCity({ name: "--" });
   }
 
+  //https://www.youtube.com/watch?v=wnhvanMdx4s pour la video en arriere plan
+
   return (
-      <div className={"min-h-screen  bg-black flex flex-col"}>
+      <div className={"min-h-screen bg-black flex flex-col justify-between "}>
+        <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
+
+
+        <div className={"z-10 mt-10 mx-10"}>
 
         <SearchbarComponents
             setChoosenCity={setChoosenCity}
-          location={location}
             textValue={textValue}
             setTextValue={setTextValue}
             choosenCity={choosenCity}
             setTimezone={setTimezone}
         />
 
-
-        <div className={"flex flex-row justify-between"}>
-          <div className={"p-10 mr-auto"}>
-            <PrimaryCard temp={weather.current_weather.temperature} mode={mode} setMode={setMode} icon={getIconWeatherCode(weather.current_weather.weathercode)} weatherStr={getDescriptionWeatherCode(weather.current_weather.weathercode)} City={choosenCity.name} Country={choosenCity.country} handleChangeLocationClick={handleChangeLocationClick} />
+        <div className={"flex flex-row justify-between pr-auto "} style={{zIndex:1}}>
+          <div className={"p-10 mr-auto "}>
+              <PrimaryCard temp={weather.current_weather.temperature} mode={mode} setMode={setMode} icon={getIconWeatherCode(weather.current_weather.weathercode)} weatherStr={getDescriptionWeatherCode(weather.current_weather.weathercode)} City={choosenCity.name} Country={choosenCity.country} handleChangeLocationClick={handleChangeLocationClick} />
           </div>
-
-          <div className={"p-10 ml-auto"}>
+          <div className={"p-10 ml-auto "}>
             <HourCard />
           </div>
-
-
-
+        </div>
         </div>
 
 
-
+        <div className={"flex flex-row gap-5 mx-10 my-4"} style={{zIndex:1}}>
+          <SecondaryCard weather={weather || {}}/>
+          <PrevisionCard choosenCity={choosenCity} weather={weather} getIconWeatherCode={getIconWeatherCode} mode={mode}/>
+        </div>
 
       </div>
   );
