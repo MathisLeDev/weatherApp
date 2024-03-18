@@ -22,7 +22,9 @@ function MeteoComponents(props) {
         .then(data => {
           setWeather(data);
           setMeteo(data.latitude);
-        });
+        }).catch((error) => {
+          localStorage.setItem("weatherAppError", "Impossible de récupérer la météo pour cette ville");
+    });
   }, []);
 
   return <></>;

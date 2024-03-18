@@ -20,6 +20,7 @@ import stormyDay from "./assets/stormy-day.jpg";
 
 function App() {
 
+  const [error, setError] = useState(null);
   const [weather, setWeather] = useState({
     current_weather : {
       temperature: 0,
@@ -33,6 +34,25 @@ function App() {
   const [textValue, setTextValue] = useState("");
   const [timezone, setTimezone] = useState(null);
 
+  useEffect(() => {
+    const checkError = async () => {
+        const error = localStorage.getItem("weatherAppError");
+        if(error){
+          setError(error);
+          await localStorage.removeItem("weatherAppError");
+        } else {
+          console.log("no error")
+        }
+    }
+    checkError().then();
+
+
+    const interval = setInterval(async () => {
+        await checkError();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const getBackGround = (weatherCode) => {
     switch (weatherCode) {
@@ -401,29 +421,32 @@ function App() {
       const longitude = choosenCity.longitude;
       const timezone = choosenCity.timezone;
       const url =
-        "https://api.open-meteo.com/v1/forecast?latitude=" +
-        latitude +
-        "&longitude=" +
-        longitude +
-        "&daily=temperature_2m_max," +
-        "temperature_2m_min," +
-        "windspeed_10m_max," +
-        "winddirection_10m_dominant," +
-        "weathercode" +
-        "&current_weather=true" +
-        "&current_weather=true" +
-        "&hourly=temperature_2m,weathercode" +
-        "&timezone=" +
-        timezone;
+          "https://api.open-meteo.com/v1/forecast?latitude=" +
+          latitude +
+          "&longitude=" +
+          longitude +
+          "&daily=temperature_2m_max," +
+          "temperature_2m_min," +
+          "windspeed_10m_max," +
+          "winddirection_10m_dominant," +
+          "weathercode" +
+          "&current_weather=true" +
+          "&current_weather=true" +
+          "&hourly=temperature_2m,weathercode" +
+          "&timezone=" +
+          timezone;
       console.log(url)
       //GET vers l'API
 
-      axios(url).then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setWeather(response.data);
-        }
-      });
+      fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            setWeather(data);
+          }).catch((error) => {
+            console.error('Error:', error);
+            localStorage.setItem("weatherAppError", "Une erreur est survenue lors de la récupération des données météo.");
+          })
     }
   }, [choosenCity, timezone]);
 
@@ -451,8 +474,9 @@ function App() {
         <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
 
 
-        <div className={"z-10 mt-10 mx-10"}>
 
+
+        <div className={"z-10 mt-10 mx-10"}>
         <SearchbarComponents
             setChoosenCity={setChoosenCity}
             textValue={textValue}

@@ -64,13 +64,19 @@ function SearchbarComponents(props) {
                     "https://geocoding-api.open-meteo.com/v1/search?name=" +
                     data.address.city;
                 fetch(url)
-                    .then(response => response.json())
+                    .then(response => response.json()).catch((error) => {
+                    localStorage.setItem("weatherAppError", "Impossible de récupérer la météo pour cette ville");
+                })
                     .then(res => {
                         if (res.results) {
                             setChoosenCity(res.results[0]);
                         }
-                    });
-            });
+                    }).catch((error) => {
+                    localStorage.setItem("weatherAppError", "Impossible de récupérer la météo pour cette ville");
+                });
+            }).catch((error) => {
+            localStorage.setItem("weatherAppError", "Impossible de récupérer la météo pour cette ville");
+        });
     };
 
 
