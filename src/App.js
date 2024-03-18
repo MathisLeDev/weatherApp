@@ -1,7 +1,6 @@
 import "./App.css";
 import SearchbarComponents from "./components/SearchbarComponents.jsx";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import partiallycloudy from "./img/wi-cloudy.svg";
 import sunny from "./img/wi-day-sunny.svg";
 import fog from "./img/wi-day-fog.svg";
@@ -25,6 +24,7 @@ function App() {
     current_weather : {
       temperature: 0,
       weathercode: 0,
+      windspeed: 0
     },
 
   });
@@ -37,9 +37,11 @@ function App() {
       const error = localStorage.getItem("weatherAppError")
       if(error){
         setError(error)
-        localStorage.removeItem("weatherAppError")
+        setInterval(() => {
+            localStorage.removeItem("weatherAppError")
+        }, 4000)
       } else {
-        console.log("no error")
+        setError(null)
       }
     }
 
@@ -326,7 +328,9 @@ function App() {
 
    */
   useEffect(() => {
-    if (choosenCity.name !== "" && timezone) {
+
+    // Enlever choosenCity.latitude && choosenCity.longitude pour simuler l'erreur
+    if (choosenCity.name !== "" && timezone && choosenCity.latitude && choosenCity.longitude) {
       const latitude = choosenCity.latitude;
       const longitude = choosenCity.longitude;
       const timezone = choosenCity.timezone;
@@ -348,12 +352,21 @@ function App() {
       console.log(url)
       //GET vers l'API
 
-      axios(url).then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setWeather(response.data);
-        }
-      });
+      fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+            setWeather(data);
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation: ', error);
+            localStorage.setItem("weatherAppError", "Une erreur est survenue lors de la recherche des villes")
+          });
     }
   }, [choosenCity, timezone]);
 
@@ -381,7 +394,7 @@ function App() {
         <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
 
         {error &&
-        <div className={"bg-red-500 text-white rounded-xl absolute right-0 p-2 m-4"}>
+        <div className={"bg-red-500 text-white rounded-xl absolute right-0 p-2 m-4 z-20"}>
           <h1 className={"text-xl"}>Alert :</h1>
           <p>
             {error || "Une erreur est survenue"}
