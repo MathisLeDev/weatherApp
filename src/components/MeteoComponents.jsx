@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
 
 function MeteoComponents(props) {
   const { choosenCityCoordinates, setWeather } = props;
@@ -11,17 +10,19 @@ function MeteoComponents(props) {
     const longitude = choosenCityCoordinates.longitude;
 
     const url =
-      "https://api.open-meteo.com/v1/forecast?latitude=" +
-      latitude +
-      "&longitude=" +
-      longitude +
-      "&daily=temperature_2m_min" +
-      "&daily=temperature_2m_max" +
-      "&timezone=GMT";
-    axios.get(url).then((r) => {
-      setWeather(r.data);
-      setMeteo(r.data.latitude);
-    });
+        "https://api.open-meteo.com/v1/forecast?latitude=" +
+        latitude +
+        "&longitude=" +
+        longitude +
+        "&daily=temperature_2m_min" +
+        "&daily=temperature_2m_max" +
+        "&timezone=GMT";
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          setWeather(data);
+          setMeteo(data.latitude);
+        });
   }, []);
 
   return <></>;

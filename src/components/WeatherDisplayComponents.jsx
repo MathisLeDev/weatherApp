@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import ChoosenDayWeatherComponents from "./ChoosenDayWeatherComponents";
 
 function WeatherDisplayComponents(props) {
   const { choosenCity, setChoosenDay, weather, getIconWeatherCode } = props;
