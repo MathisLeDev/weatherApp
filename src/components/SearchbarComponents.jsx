@@ -171,7 +171,7 @@ function SearchbarComponents(props) {
                     onFocus={handleFocusEvent}
                 />
                 <button type="submit" className={"p-2 rounded-r-xl text-gray-300 text-lg  bg-black/40 hover:bg-black/70 backdrop-blur"}>
-                    Rechercher
+                    Search
                 </button>
             </form>
             {isSearchBarActive && displaySuggestions()}

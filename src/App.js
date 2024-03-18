@@ -25,8 +25,6 @@ function App() {
     current_weather : {
       temperature: 0,
       weathercode: 0,
-
-
     },
 
   });
@@ -35,24 +33,23 @@ function App() {
   const [timezone, setTimezone] = useState(null);
 
   useEffect(() => {
-    const checkError = async () => {
-        const error = localStorage.getItem("weatherAppError");
-        if(error){
-          setError(error);
-          await localStorage.removeItem("weatherAppError");
-        } else {
-          console.log("no error")
-        }
+    const checkForError = () => {
+      const error = localStorage.getItem("weatherAppError")
+      if(error){
+        setError(error)
+        localStorage.removeItem("weatherAppError")
+      } else {
+        console.log("no error")
+      }
     }
-    checkError().then();
 
+    checkForError()
 
-    const interval = setInterval(async () => {
-        await checkError();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+    const interval = setInterval(() => {
+        checkForError()
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const getBackGround = (weatherCode) => {
     switch (weatherCode) {
@@ -112,7 +109,7 @@ function App() {
         return stormyDay;
       case 99:
         return stormyDay;
-        default:
+      default:
         return sunnyDay;
     }
   }
@@ -326,94 +323,7 @@ function App() {
    * Est appelé à chaque changement de choosenCity et de timezone.
    * Ce qui correspond au moment où l'utilisateur change de ville.
    * Appelle alors d'un GET pour avoir le temps actuelle, de la journée h/h et de la semaine en j/j
-   * exemple JSON type:  {
-   *     "latitude": 48.11,
-   *     "longitude": -1.6700001,
-   *     "generationtime_ms": 1.7910003662109375,
-   *     "utc_offset_seconds": 7200,
-   *     "timezone": "Europe/Paris",
-   *     "timezone_abbreviation": "CEST",
-   *     "elevation": 44.0,
-   *     "current_weather": {
-   *         "temperature": 11.6,
-   *         "windspeed": 20.8,
-   *         "winddirection": 332.0,
-   *         "weathercode": 0,
-   *         "time": "2023-03-26T19:00"
-   *     },
-   *     "hourly_units": {
-   *         "time": "iso8601",
-   *         "temperature_2m": "°C",
-   *         "weathercode": "wmo code"
-   *     },
-   *     "hourly": {
-   *         "time": [
-   *             "2023-03-26T00:00",
-   *             "2023-03-26T01:00",
-   *             "2023-03-26T02:00",
-   *             "2023-03-26T03:00",
-   *             "2023-03-26T04:00"
-   *         ],
-   *         "temperature_2m": [
-   *             9.4,
-   *             9.5,
-   *             10.7,
-   *             10.0,
-   *             9.4
-   *         ],
-   *         "weathercode": [
-   *             51,
-   *             53,
-   *             55,
-   *             3,
-   *             3
-   *         ]
-   *     },
-   *     "daily_units": {
-   *         "time": "iso8601",
-   *         "temperature_2m_max": "°C",
-   *         "temperature_2m_min": "°C",
-   *         "weathercode": "wmo code"
-   *     },
-   *     "daily": {
-   *         "time": [
-   *             "2023-03-26",
-   *             "2023-03-27",
-   *             "2023-03-28",
-   *             "2023-03-29",
-   *             "2023-03-30",
-   *             "2023-03-31",
-   *             "2023-04-01"
-   *         ],
-   *         "temperature_2m_max": [
-   *             12.3,
-   *             13.6,
-   *             14.2,
-   *             17.7,
-   *             14.3,
-   *             12.7,
-   *             11.6
-   *         ],
-   *         "temperature_2m_min": [
-   *             7.8,
-   *             3.7,
-   *             6.1,
-   *             10.1,
-   *             10.8,
-   *             8.7,
-   *             6.8
-   *         ],
-   *         "weathercode": [
-   *             61,
-   *             3,
-   *             51,
-   *             3,
-   *             80,
-   *             80,
-   *             3
-   *         ]
-   *     }
-   * }
+
    */
   useEffect(() => {
     if (choosenCity.name !== "" && timezone) {
@@ -438,15 +348,12 @@ function App() {
       console.log(url)
       //GET vers l'API
 
-      fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            setWeather(data);
-          }).catch((error) => {
-            console.error('Error:', error);
-            localStorage.setItem("weatherAppError", "Une erreur est survenue lors de la récupération des données météo.");
-          })
+      axios(url).then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setWeather(response.data);
+        }
+      });
     }
   }, [choosenCity, timezone]);
 
@@ -473,26 +380,33 @@ function App() {
       <div className={"min-h-screen bg-black flex flex-col justify-between "}>
         <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
 
-
-
+        {error &&
+        <div className={"bg-red-500 text-white rounded-xl absolute right-0 p-2 m-4"}>
+          <h1 className={"text-xl"}>Alert :</h1>
+          <p>
+            {error || "Une erreur est survenue"}
+          </p>
+        </div>
+        }
 
         <div className={"z-10 mt-10 mx-10"}>
-        <SearchbarComponents
-            setChoosenCity={setChoosenCity}
-            textValue={textValue}
-            setTextValue={setTextValue}
-            choosenCity={choosenCity}
-            setTimezone={setTimezone}
-        />
 
-        <div className={"flex flex-row justify-between pr-auto "} style={{zIndex:1}}>
-          <div className={"p-10 mr-auto "}>
+          <SearchbarComponents
+              setChoosenCity={setChoosenCity}
+              textValue={textValue}
+              setTextValue={setTextValue}
+              choosenCity={choosenCity}
+              setTimezone={setTimezone}
+          />
+
+          <div className={"flex flex-row justify-between pr-auto "} style={{zIndex:1}}>
+            <div className={"p-10 mr-auto "}>
               <PrimaryCard temp={weather.current_weather.temperature} mode={mode} setMode={setMode} icon={getIconWeatherCode(weather.current_weather.weathercode)} weatherStr={getDescriptionWeatherCode(weather.current_weather.weathercode)} City={choosenCity.name} Country={choosenCity.country} handleChangeLocationClick={handleChangeLocationClick} />
+            </div>
+            <div className={"p-10 ml-auto "}>
+              <HourCard />
+            </div>
           </div>
-          <div className={"p-10 ml-auto "}>
-            <HourCard />
-          </div>
-        </div>
         </div>
 
 
