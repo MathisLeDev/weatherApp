@@ -18,7 +18,7 @@ return (
                     <div className={"flex gap-4 items-center"}>
                         <div className={"flex items-center gap-2"}>
                             <img src={humidity} alt="" height={25} width={25}/>
-                            <span>Humidity</span>
+                            <span className={"text-gray-100"}>Humidity</span>
                         </div>
                         <span className={"text-gray-100"}>{weather?.current_weather?.relative_humidity_2m || "Ø%"}</span>
                     </div>
@@ -26,7 +26,7 @@ return (
                     <div className={"flex gap-4 items-center"}>
                         <div className={"flex items-center gap-2"}>
                             <img src={wind} alt="" height={25} width={25}/>
-                            <span>Wind</span>
+                            <span className={"text-gray-100"}>Wind</span>
                         </div>
                         <span className={"text-gray-100"}>{weather?.current_weather?.windspeed + " km/h" || "Økm/h"}</span>
                     </div>
@@ -34,7 +34,7 @@ return (
                     <div className={"flex gap-4 items-center"}>
                         <div className={"flex items-center gap-2"}>
                             <img src={visibility} alt="" height={25} width={25}/>
-                            <span>Visibility</span>
+                            <span className={"text-gray-100"}>Visibility</span>
                         </div>
                         <span className={"text-gray-100"}>{weather?.current_weather?.visibility || "Good"}</span>
                     </div>
