@@ -1,6 +1,6 @@
 import "./App.css";
 import SearchbarComponents from "./components/SearchbarComponents.jsx";
-import { useEffect, useState } from "react";
+import {createRef, useEffect, useRef, useState} from "react";
 import partiallycloudy from "./img/wi-cloudy.svg";
 import sunny from "./img/wi-day-sunny.svg";
 import fog from "./img/wi-day-fog.svg";
@@ -16,6 +16,12 @@ import rainyDay from "./assets/rainy-day.jpg";
 import cloudyDay from "./assets/cloudy-day.jpg";
 import stormyDay from "./assets/stormy-day.jpg";
 
+import SunnyMp4 from "../src/assets/videos/soleil.mp4";
+import CloudyMp4 from "../src/assets/videos/nuage.mp4";
+import RainyMp4 from "../src/assets/videos/pluie.mp4";
+import LignthingMp4 from "../src/assets/videos/orage.mp4";
+
+import ReactPlayer from "react-player";
 
 function App() {
 
@@ -52,6 +58,70 @@ function App() {
     }, 1000)
     return () => clearInterval(interval)
   }, [])
+
+  const getBackGroundVideo = (weatherCode) => {
+    console.log("weatherCode : ", weatherCode)
+    switch (weatherCode) {
+      case 0:
+        return SunnyMp4;
+      case 1:
+        return CloudyMp4;
+      case 2:
+        return CloudyMp4;
+      case 3:
+        return CloudyMp4;
+      case 45:
+        return CloudyMp4;
+      case 48:
+        return CloudyMp4;
+      case 51:
+        return RainyMp4;
+      case 53:
+        return RainyMp4;
+      case 55:
+        return RainyMp4;
+      case 56:
+        return RainyMp4;
+      case 57:
+        return RainyMp4;
+      case 61:
+        return RainyMp4;
+      case 63:
+        return RainyMp4;
+      case 65:
+        return RainyMp4;
+      case 66:
+        return RainyMp4;
+      case 67:
+        return RainyMp4;
+      case 71:
+        return CloudyMp4;
+      case 73:
+        return CloudyMp4;
+      case 75:
+        return CloudyMp4;
+      case 77:
+        return CloudyMp4;
+      case 80:
+        return LignthingMp4;
+      case 81:
+        return LignthingMp4;
+      case 82:
+        return LignthingMp4;
+      case 85:
+        return CloudyMp4;
+      case 86:
+        return CloudyMp4;
+      case 95:
+        return LignthingMp4;
+      case 96:
+        return CloudyMp4;
+      case 99:
+        return CloudyMp4;
+      default:
+        return SunnyMp4;
+    }
+  }
 
   const getBackGround = (weatherCode) => {
     switch (weatherCode) {
@@ -389,9 +459,42 @@ function App() {
 
   //https://www.youtube.com/watch?v=wnhvanMdx4s pour la video en arriere plan
 
+  const height = window.innerHeight;
+  const width = window.innerWidth;
+
+  const ReactPlayerRef = useRef();
+
+  useEffect(() => {
+    const activatedSound = ()=> {
+      setMuted(false)
+    }
+
+    const timer = setTimeout(() => {
+      activatedSound()
+    }, 1000 )
+    console.log("timer")
+    return () => clearTimeout(timer)
+
+  }, [weather]);
+
+  const [muted, setMuted] = useState(true);
+
   return (
       <div className={"min-h-screen bg-black flex flex-col justify-between "}>
+        {/*
         <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
+        */}
+
+        <ReactPlayer
+            url={getBackGroundVideo(weather.current_weather.weathercode)}
+            controls={false}
+            playing={true}
+            loop={true}
+            muted={muted}
+            width={width}
+            height={height}
+            style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}}
+        />
 
         {error &&
         <div className={"bg-red-500 text-white rounded-xl absolute right-0 p-2 m-4 z-20"}>
