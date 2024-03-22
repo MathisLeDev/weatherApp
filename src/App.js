@@ -481,10 +481,8 @@ function App() {
 
   return (
       <div className={"min-h-screen bg-black flex flex-col justify-between "}>
-        {/*
         <img className={"transition-all duration-200"} style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}} src={getBackGround(weather.current_weather.weathercode)} alt=""/>
-        */}
-
+        {/*
         <ReactPlayer
             url={getBackGroundVideo(weather.current_weather.weathercode)}
             controls={false}
@@ -495,6 +493,7 @@ function App() {
             height={height}
             style={{position:"absolute", zIndex:0, height:"100%", minWidth:"100%",  objectFit: "cover"}}
         />
+        */}
 
         {error &&
         <div className={"bg-red-500 text-white rounded-xl absolute right-0 p-2 m-4 z-20"}>
