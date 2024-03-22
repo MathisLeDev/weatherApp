@@ -400,7 +400,7 @@ function App() {
   useEffect(() => {
 
     // Enlever choosenCity.latitude && choosenCity.longitude pour simuler l'erreur
-    if (choosenCity.name !== "" && timezone && choosenCity.latitude && choosenCity.longitude) {
+    if (choosenCity.name !== "" && timezone ) {
       const latitude = choosenCity.latitude;
       const longitude = choosenCity.longitude;
       const timezone = choosenCity.timezone;
