@@ -8,20 +8,11 @@ In the project directory, you can run:
 
 ### `npm start`
 
-## 🚧THIS IS AN APP FOR MOBILE. IT'S NOT OPTIMIZED FOR DESKTOP DISPLAY 🚧.
-
 # Weather App
 
 Welcome to my Weather App !
 
 ## Getting Started
-
-
-
-
-You should toggle mobile device toolbar in the inspection screen on your browser.
-Before you begin, please make sure you have installed all the dependencies required with `npm install`
-
 
 ## Running the App
 

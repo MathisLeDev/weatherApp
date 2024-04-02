@@ -15,11 +15,11 @@ import sunnyDay from "./assets/beautiful-day.jpg";
 import rainyDay from "./assets/rainy-day.jpg";
 import cloudyDay from "./assets/cloudy-day.jpg";
 import stormyDay from "./assets/stormy-day.jpg";
-
-import SunnyMp4 from "../src/assets/videos/soleil.mp4";
-import CloudyMp4 from "../src/assets/videos/nuage.mp4";
-import RainyMp4 from "../src/assets/videos/pluie.mp4";
-import LignthingMp4 from "../src/assets/videos/orage.mp4";
+//
+// import SunnyMp4 from "../src/assets/videos/soleil.mp4";
+// import CloudyMp4 from "../src/assets/videos/nuage.mp4";
+// import RainyMp4 from "../src/assets/videos/pluie.mp4";
+// import LignthingMp4 from "../src/assets/videos/orage.mp4";
 
 import ReactPlayer from "react-player";
 
@@ -59,69 +59,69 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  const getBackGroundVideo = (weatherCode) => {
-    console.log("weatherCode : ", weatherCode)
-    switch (weatherCode) {
-      case 0:
-        return SunnyMp4;
-      case 1:
-        return CloudyMp4;
-      case 2:
-        return CloudyMp4;
-      case 3:
-        return CloudyMp4;
-      case 45:
-        return CloudyMp4;
-      case 48:
-        return CloudyMp4;
-      case 51:
-        return RainyMp4;
-      case 53:
-        return RainyMp4;
-      case 55:
-        return RainyMp4;
-      case 56:
-        return RainyMp4;
-      case 57:
-        return RainyMp4;
-      case 61:
-        return RainyMp4;
-      case 63:
-        return RainyMp4;
-      case 65:
-        return RainyMp4;
-      case 66:
-        return RainyMp4;
-      case 67:
-        return RainyMp4;
-      case 71:
-        return CloudyMp4;
-      case 73:
-        return CloudyMp4;
-      case 75:
-        return CloudyMp4;
-      case 77:
-        return CloudyMp4;
-      case 80:
-        return LignthingMp4;
-      case 81:
-        return LignthingMp4;
-      case 82:
-        return LignthingMp4;
-      case 85:
-        return CloudyMp4;
-      case 86:
-        return CloudyMp4;
-      case 95:
-        return LignthingMp4;
-      case 96:
-        return CloudyMp4;
-      case 99:
-        return CloudyMp4;
-      default:
-        return SunnyMp4;
-    }
-  }
+  // const getBackGroundVideo = (weatherCode) => {
+  //   console.log("weatherCode : ", weatherCode)
+  //   switch (weatherCode) {
+  //     case 0:
+  //       return SunnyMp4;
+  //     case 1:
+  //       return CloudyMp4;
+  //     case 2:
+  //       return CloudyMp4;
+  //     case 3:
+  //       return CloudyMp4;
+  //     case 45:
+  //       return CloudyMp4;
+  //     case 48:
+  //       return CloudyMp4;
+  //     case 51:
+  //       return RainyMp4;
+  //     case 53:
+  //       return RainyMp4;
+  //     case 55:
+  //       return RainyMp4;
+  //     case 56:
+  //       return RainyMp4;
+  //     case 57:
+  //       return RainyMp4;
+  //     case 61:
+  //       return RainyMp4;
+  //     case 63:
+  //       return RainyMp4;
+  //     case 65:
+  //       return RainyMp4;
+  //     case 66:
+  //       return RainyMp4;
+  //     case 67:
+  //       return RainyMp4;
+  //     case 71:
+  //       return CloudyMp4;
+  //     case 73:
+  //       return CloudyMp4;
+  //     case 75:
+  //       return CloudyMp4;
+  //     case 77:
+  //       return CloudyMp4;
+  //     case 80:
+  //       return LignthingMp4;
+  //     case 81:
+  //       return LignthingMp4;
+  //     case 82:
+  //       return LignthingMp4;
+  //     case 85:
+  //       return CloudyMp4;
+  //     case 86:
+  //       return CloudyMp4;
+  //     case 95:
+  //       return LignthingMp4;
+  //     case 96:
+  //       return CloudyMp4;
+  //     case 99:
+  //       return CloudyMp4;
+  //     default:
+  //       return SunnyMp4;
+  //   }
+  // }
 
   const getBackGround = (weatherCode) => {
     switch (weatherCode) {
