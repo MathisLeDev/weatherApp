@@ -34,7 +34,7 @@ function App() {
     },
 
   });
-  const [choosenCity, setChoosenCity] = useState({ name: "--" });
+  const [choosenCity, setChoosenCity] = useState({ name: "" });
   const [textValue, setTextValue] = useState("");
   const [timezone, setTimezone] = useState(null);
 

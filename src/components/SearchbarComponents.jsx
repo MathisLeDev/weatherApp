@@ -164,7 +164,7 @@ function SearchbarComponents(props) {
             >
                 <input
                     type="text"
-                    placeholder="Rennes, Alençon..."
+                    placeholder="Indiquez une ville..."
                     value={textValue}
                     onChange={handleTextChange}
                     className="w-[500px]  px-2 py-2.5 text-gray-200 bg-black/40 rounded-l-xl backdrop-blur"
